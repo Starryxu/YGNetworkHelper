@@ -7,15 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		146D95872B72D227FFFEEC6F /* libPods-YGNetworkHelper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B85F0DC42B51129F7712840 /* libPods-YGNetworkHelper.a */; };
 		D3DD450D205BB58B000C3F27 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D3DD450C205BB58B000C3F27 /* AppDelegate.m */; };
 		D3DD4510205BB58B000C3F27 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D3DD450F205BB58B000C3F27 /* ViewController.m */; };
 		D3DD4513205BB58B000C3F27 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D3DD4511205BB58B000C3F27 /* Main.storyboard */; };
 		D3DD4515205BB58B000C3F27 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3DD4514205BB58B000C3F27 /* Assets.xcassets */; };
 		D3DD4518205BB58B000C3F27 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D3DD4516205BB58B000C3F27 /* LaunchScreen.storyboard */; };
 		D3DD451B205BB58B000C3F27 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D3DD451A205BB58B000C3F27 /* main.m */; };
+		D3DD4524205BBA65000C3F27 /* YGNetworkHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D3DD4523205BBA65000C3F27 /* YGNetworkHelper.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		56326AD513F68AD73166B51A /* Pods-YGNetworkHelper.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YGNetworkHelper.release.xcconfig"; path = "Pods/Target Support Files/Pods-YGNetworkHelper/Pods-YGNetworkHelper.release.xcconfig"; sourceTree = "<group>"; };
+		5B85F0DC42B51129F7712840 /* libPods-YGNetworkHelper.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-YGNetworkHelper.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3DD4508205BB58B000C3F27 /* YGNetworkHelper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YGNetworkHelper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3DD450B205BB58B000C3F27 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		D3DD450C205BB58B000C3F27 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -26,6 +30,9 @@
 		D3DD4517205BB58B000C3F27 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D3DD4519205BB58B000C3F27 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D3DD451A205BB58B000C3F27 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		D3DD4522205BBA65000C3F27 /* YGNetworkHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YGNetworkHelper.h; sourceTree = "<group>"; };
+		D3DD4523205BBA65000C3F27 /* YGNetworkHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YGNetworkHelper.m; sourceTree = "<group>"; };
+		F87E7D1471DED9A32C5EC246 /* Pods-YGNetworkHelper.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YGNetworkHelper.debug.xcconfig"; path = "Pods/Target Support Files/Pods-YGNetworkHelper/Pods-YGNetworkHelper.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,17 +40,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				146D95872B72D227FFFEEC6F /* libPods-YGNetworkHelper.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1B953C4B4E10D64979636F6A /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F87E7D1471DED9A32C5EC246 /* Pods-YGNetworkHelper.debug.xcconfig */,
+				56326AD513F68AD73166B51A /* Pods-YGNetworkHelper.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		D3DD44FF205BB58B000C3F27 = {
 			isa = PBXGroup;
 			children = (
 				D3DD450A205BB58B000C3F27 /* YGNetworkHelper */,
 				D3DD4509205BB58B000C3F27 /* Products */,
+				1B953C4B4E10D64979636F6A /* Pods */,
+				DAB8C8EDB50FEB6566B0F52F /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -58,6 +77,7 @@
 		D3DD450A205BB58B000C3F27 /* YGNetworkHelper */ = {
 			isa = PBXGroup;
 			children = (
+				D3DD4521205BBA59000C3F27 /* YGNetworkHelper */,
 				D3DD450B205BB58B000C3F27 /* AppDelegate.h */,
 				D3DD450C205BB58B000C3F27 /* AppDelegate.m */,
 				D3DD450E205BB58B000C3F27 /* ViewController.h */,
@@ -71,6 +91,23 @@
 			path = YGNetworkHelper;
 			sourceTree = "<group>";
 		};
+		D3DD4521205BBA59000C3F27 /* YGNetworkHelper */ = {
+			isa = PBXGroup;
+			children = (
+				D3DD4522205BBA65000C3F27 /* YGNetworkHelper.h */,
+				D3DD4523205BBA65000C3F27 /* YGNetworkHelper.m */,
+			);
+			path = YGNetworkHelper;
+			sourceTree = "<group>";
+		};
+		DAB8C8EDB50FEB6566B0F52F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5B85F0DC42B51129F7712840 /* libPods-YGNetworkHelper.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -78,9 +115,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D3DD451E205BB58B000C3F27 /* Build configuration list for PBXNativeTarget "YGNetworkHelper" */;
 			buildPhases = (
+				B877CFD5BB5CB0088CA08996 /* [CP] Check Pods Manifest.lock */,
 				D3DD4504205BB58B000C3F27 /* Sources */,
 				D3DD4505205BB58B000C3F27 /* Frameworks */,
 				D3DD4506205BB58B000C3F27 /* Resources */,
+				BC6C890774030742927AAE39 /* [CP] Embed Pods Frameworks */,
+				D0354B928F44BFFCB78E400D /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -137,6 +177,57 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		B877CFD5BB5CB0088CA08996 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-YGNetworkHelper-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BC6C890774030742927AAE39 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-YGNetworkHelper/Pods-YGNetworkHelper-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D0354B928F44BFFCB78E400D /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-YGNetworkHelper/Pods-YGNetworkHelper-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		D3DD4504205BB58B000C3F27 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -144,6 +235,7 @@
 			files = (
 				D3DD4510205BB58B000C3F27 /* ViewController.m in Sources */,
 				D3DD451B205BB58B000C3F27 /* main.m in Sources */,
+				D3DD4524205BBA65000C3F27 /* YGNetworkHelper.m in Sources */,
 				D3DD450D205BB58B000C3F27 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -276,6 +368,7 @@
 		};
 		D3DD451F205BB58B000C3F27 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F87E7D1471DED9A32C5EC246 /* Pods-YGNetworkHelper.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -289,6 +382,7 @@
 		};
 		D3DD4520205BB58B000C3F27 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 56326AD513F68AD73166B51A /* Pods-YGNetworkHelper.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
