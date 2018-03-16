@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
   s.author       = { "xuyaguang" => "xu_yaguang@163.com" }
   s.platform     = :ios, "8.0"
   s.source       = { :git => "https://github.com/Starryxu/YGNetworkHelper.git", :tag => s.version.to_s }
-  s.source_files  = "YGNetworkHelper/*.{h,m}"
+  s.source_files  = "YGNetworkHelper/YGNetworkHelper/*.{h,m}"
   s.requires_arc = true
   s.dependency 'AFNetworking'
   s.dependency 'YYCache'
