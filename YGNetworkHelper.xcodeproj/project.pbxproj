@@ -142,7 +142,7 @@
 				TargetAttributes = {
 					D3DD4507205BB58B000C3F27 = {
 						CreatedOnToolsVersion = 9.2;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -371,12 +371,16 @@
 			baseConfigurationReference = F87E7D1471DED9A32C5EC246 /* Pods-YGNetworkHelper.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = BT4RTK8JL9;
 				INFOPLIST_FILE = YGNetworkHelper/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = kk.land.blockkan.YGNetworkHelper;
+				PRODUCT_BUNDLE_IDENTIFIER = kk.land.blockkan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				PROVISIONING_PROFILE = "51b1b1a3-814b-445f-86d6-d8c96dea245c";
+				PROVISIONING_PROFILE_SPECIFIER = blockkan_development_provisioning;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -385,12 +389,17 @@
 			baseConfigurationReference = 56326AD513F68AD73166B51A /* Pods-YGNetworkHelper.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = BT4RTK8JL9;
 				INFOPLIST_FILE = YGNetworkHelper/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = kk.land.blockkan.YGNetworkHelper;
+				PRODUCT_BUNDLE_IDENTIFIER = kk.land.blockkan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				PROVISIONING_PROFILE = "353a2df7-0762-4018-9bbe-96f4a4eed1ed";
+				PROVISIONING_PROFILE_SPECIFIER = blockkan_distribution_provisioning;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
