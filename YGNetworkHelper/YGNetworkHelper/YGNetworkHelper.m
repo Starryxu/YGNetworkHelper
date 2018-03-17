@@ -382,7 +382,7 @@ static AFHTTPSessionManager *_sessionManager;
     // 设置请求超时 30 秒
     _sessionManager.requestSerializer.timeoutInterval = 30.f;
     // 可接受服务器返回数据类型
-    _sessionManager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/html", @"text/json", @"text/plain", @"text/javascript", @"text/xml", @"image/*", nil];
+    _sessionManager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"application/octet-stream", @"multipart/form-data", @"text/html", @"text/json", @"text/plain", @"text/javascript", @"text/xml", @"image/*", nil];
     // 打开状态栏的等待菊花
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
 }
