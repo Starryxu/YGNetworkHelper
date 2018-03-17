@@ -3,7 +3,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "YGNetworkHelper"
-  s.version      = "0.0.3"
+  s.version      = "0.0.4"
   s.summary      = "AFNetworking 3.x 与 YYCache 封装而成,简化网络请求和数据缓存调用方法!"
   s.homepage     = "https://github.com/Starryxu/YGNetworkHelper.git"
   s.license      = { :type => "MIT", :file => "LICENSE" }
