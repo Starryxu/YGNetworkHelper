@@ -13,6 +13,7 @@ Pod::Spec.new do |s|
   s.source_files  = "YGNetworkHelper/YGNetworkHelper/*.{h,m}"
   s.requires_arc = true
   s.dependency 'AFNetworking'
+#s.resources    =
   s.dependency 'YYCache'
 
 end
