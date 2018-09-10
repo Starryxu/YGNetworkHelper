@@ -7,9 +7,7 @@
 //
 
 #import "YGNetworkHelper.h"
-#import "AFNetworking.h"
-#import "AFNetworkActivityIndicatorManager.h"
-#import "YYCache.h"
+
 
 
 
@@ -24,7 +22,7 @@
 
 @implementation YGNetworkHelper
 
-static BOOL _isOpenLog;   // 是否已开启日志打印
+static BOOL _isDebug;   // 是否已开启日志打印
 static NSMutableArray *_allSessionTask;
 static AFHTTPSessionManager *_sessionManager;
 
@@ -35,19 +33,19 @@ static AFHTTPSessionManager *_sessionManager;
         switch (status) {
             case AFNetworkReachabilityStatusUnknown:
                 networkStatus ? networkStatus(YGNetworkStatusUnknown) : nil;
-                if (_isOpenLog) YGLog(@"未知网络");
+                if (_isDebug) YGLog(@"未知网络");
                 break;
             case AFNetworkReachabilityStatusNotReachable:
                 networkStatus ? networkStatus(YGNetworkStatusNotReachable) : nil;
-                if (_isOpenLog) YGLog(@"无网络");
+                if (_isDebug) YGLog(@"无网络");
                 break;
             case AFNetworkReachabilityStatusReachableViaWWAN:
                 networkStatus ? networkStatus(YGNetworkStatusReachableViaWWAN) : nil;
-                if (_isOpenLog) YGLog(@"手机自带网络");
+                if (_isDebug) YGLog(@"手机自带网络");
                 break;
             case AFNetworkReachabilityStatusReachableViaWiFi:
                 networkStatus ? networkStatus(YGNetworkStatusReachableViaWiFi) : nil;
-                if (_isOpenLog) YGLog(@"WIFI");
+                if (_isDebug) YGLog(@"WIFI");
                 break;
         }
     }];
@@ -66,12 +64,8 @@ static AFHTTPSessionManager *_sessionManager;
     return [AFNetworkReachabilityManager sharedManager].reachableViaWiFi;
 }
 
-+ (void)openLog {
-    _isOpenLog = YES;
-}
-
-+ (void)closeLog {
-    _isOpenLog = NO;
++ (void)setDebugMode:(BOOL)isDebug {
+    _isDebug = isDebug;
 }
 
 + (void)cancelAllRequest {
@@ -126,7 +120,7 @@ static AFHTTPSessionManager *_sessionManager;
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
-        if (_isOpenLog) {YGLog(@"responseObject = %@",responseObject);}
+        if (_isDebug) {YGLog(@"responseObject = %@",responseObject);}
         [[self allSessionTask] removeObject:task];
         success ? success(responseObject) : nil;
         //对数据进行异步缓存
@@ -134,7 +128,7 @@ static AFHTTPSessionManager *_sessionManager;
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
-        if (_isOpenLog) {YGLog(@"error = %@",error);}
+        if (_isDebug) {YGLog(@"error = %@",error);}
         [[self allSessionTask] removeObject:task];
         failure ? failure(error) : nil;
         
@@ -158,7 +152,7 @@ static AFHTTPSessionManager *_sessionManager;
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
-        if (_isOpenLog) {YGLog(@"responseObject = %@",responseObject);}
+        if (_isDebug) {YGLog(@"responseObject = %@",responseObject);}
         [[self allSessionTask] removeObject:task];
         success ? success(responseObject) : nil;
         //对数据进行异步缓存
@@ -166,7 +160,7 @@ static AFHTTPSessionManager *_sessionManager;
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
-        if (_isOpenLog) {YGLog(@"error = %@",error);}
+        if (_isDebug) {YGLog(@"error = %@",error);}
         [[self allSessionTask] removeObject:task];
         failure ? failure(error) : nil;
         
@@ -185,13 +179,13 @@ static AFHTTPSessionManager *_sessionManager;
                   failure:(YGRequestFailedBlock)failure {
     NSURLSessionTask *sessionTask = [_sessionManager PUT:URL parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
-        if (_isOpenLog) {YGLog(@"responseObject = %@",responseObject);}
+        if (_isDebug) {YGLog(@"responseObject = %@",responseObject);}
         [[self allSessionTask] removeObject:task];
         success ? success(responseObject) : nil;
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
-        if (_isOpenLog) {YGLog(@"error = %@",error);}
+        if (_isDebug) {YGLog(@"error = %@",error);}
         [[self allSessionTask] removeObject:task];
         failure ? failure(error) : nil;
     }];
@@ -206,13 +200,13 @@ static AFHTTPSessionManager *_sessionManager;
 + (NSURLSessionTask *)DELETE:(NSString *)URL parameters:(id)parameters success:(YGRequestSuccessBlock)success failure:(YGRequestFailedBlock)failure {
     NSURLSessionTask *sessionTask = [_sessionManager DELETE:URL parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
-        if (_isOpenLog) {YGLog(@"responseObject = %@",responseObject);}
+        if (_isDebug) {YGLog(@"responseObject = %@",responseObject);}
         [[self allSessionTask] removeObject:task];
         success ? success(responseObject) : nil;
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
-        if (_isOpenLog) {YGLog(@"error = %@",error);}
+        if (_isDebug) {YGLog(@"error = %@",error);}
         [[self allSessionTask] removeObject:task];
         failure ? failure(error) : nil;
     }];
@@ -243,13 +237,13 @@ static AFHTTPSessionManager *_sessionManager;
         });
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
-        if (_isOpenLog) {YGLog(@"responseObject = %@",responseObject);}
+        if (_isDebug) {YGLog(@"responseObject = %@",responseObject);}
         [[self allSessionTask] removeObject:task];
         success ? success(responseObject) : nil;
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
-        if (_isOpenLog) {YGLog(@"error = %@",error);}
+        if (_isDebug) {YGLog(@"error = %@",error);}
         [[self allSessionTask] removeObject:task];
         failure ? failure(error) : nil;
     }];
@@ -296,13 +290,13 @@ static AFHTTPSessionManager *_sessionManager;
         });
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
-        if (_isOpenLog) {YGLog(@"responseObject = %@",responseObject);}
+        if (_isDebug) {YGLog(@"responseObject = %@",responseObject);}
         [[self allSessionTask] removeObject:task];
         success ? success(responseObject) : nil;
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
-        if (_isOpenLog) {YGLog(@"error = %@",error);}
+        if (_isDebug) {YGLog(@"error = %@",error);}
         [[self allSessionTask] removeObject:task];
         failure ? failure(error) : nil;
     }];

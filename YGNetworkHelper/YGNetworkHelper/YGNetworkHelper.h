@@ -6,25 +6,11 @@
 //  Copyright © 2018年 Kevin. All rights reserved.
 //
 
-/********************************************************
- 
- 说明:
- 本框架最初灵感来源于 PPNetworkHelper 如有疑问请参考: https://github.com/jkpang/PPNetworkHelper
- 在此感谢原作者 jkpang 的辛苦付出!! 也请大家支持原作者
- 
- 
- 新增:
- 根据项目需求增加了 PUT 和 DELETE 方法,改变了若干默认设置;
- 
- 
- 现在决定公开以便更多的开发者参考,还望托提出宝贵意见!!
- 邮箱:xu_yaguang@163.com
- 
- ********************************************************/
-
-
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
+#import "AFNetworking.h"
+#import "AFNetworkActivityIndicatorManager.h"
+#import "YYCache.h"
 
 typedef NS_ENUM(NSUInteger, YGNetworkStatusType) {
     // 未知网络
@@ -73,9 +59,7 @@ typedef void(^YGNetworkStatusBlock)(YGNetworkStatusType status);
 @class AFHTTPSessionManager;
 @interface YGNetworkHelper : NSObject
 
-
 /*****************************  网络部分  *****************************/
-
 
 /**
  是否有网络
@@ -125,25 +109,13 @@ typedef void(^YGNetworkStatusBlock)(YGNetworkStatusType status);
 
 
 /**
- 开启日志打印 (Debug级别)
+ 开启日志打印, 默认关闭
  */
-+ (void)openLog;
-
-/**
- 关闭日志打印,默认关闭
- */
-+ (void)closeLog;
++ (void)setDebugMode:(BOOL)isDebug;
 
 
 /**
  GET请求,无缓存
-
- @param URL        请求地址
- @param parameters 请求参数
- @param success    请求成功的回调
- @param failure    请求失败的回调
- 
- @return 返回的对象可取消请求,调用cancel方法
  */
 + (__kindof NSURLSessionTask *)GET:(NSString *)URL
                         parameters:(id)parameters
@@ -152,14 +124,6 @@ typedef void(^YGNetworkStatusBlock)(YGNetworkStatusType status);
 
 /**
  GET请求,自动缓存
- 
- @param URL           请求地址
- @param parameters    请求参数
- @param responseCache 缓存数据的回调
- @param success       请求成功的回调
- @param failure       请求失败的回调
- 
- @return 返回的对象可取消请求,调用cancel方法
  */
 + (__kindof NSURLSessionTask *)GET:(NSString *)URL
                         parameters:(id)parameters
@@ -169,13 +133,6 @@ typedef void(^YGNetworkStatusBlock)(YGNetworkStatusType status);
 
 /**
  POST请求,无缓存
- 
- @param URL        请求地址
- @param parameters 请求参数
- @param success    请求成功的回调
- @param failure    请求失败的回调
- 
- @return 返回的对象可取消请求,调用cancel方法
  */
 + (__kindof NSURLSessionTask *)POST:(NSString *)URL
                          parameters:(id)parameters
@@ -185,13 +142,6 @@ typedef void(^YGNetworkStatusBlock)(YGNetworkStatusType status);
 
 /**
  POST请求,自动缓存
-
- @param URL 请求地址
- @param parameters 请求参数
- @param responseCache 缓存数据的回调
- @param success 请求成功的回调
- @param failure 请求失败的回调
- @return 返回的对象可取消请求,调用cancel方法
  */
 + (__kindof NSURLSessionTask *)POST:(NSString *)URL
                          parameters:(id)parameters
@@ -202,13 +152,6 @@ typedef void(^YGNetworkStatusBlock)(YGNetworkStatusType status);
 
 /**
  PUT请求
- 
- @param URL        请求地址
- @param parameters 请求参数
- @param success    请求成功的回调
- @param failure    请求失败的回调
- 
- @return 返回的对象可取消请求,调用cancel方法
  */
 + (__kindof NSURLSessionTask *)PUT:(NSString *)URL
                         parameters:(id)parameters
@@ -218,13 +161,6 @@ typedef void(^YGNetworkStatusBlock)(YGNetworkStatusType status);
 
 /**
  DELETE请求
- 
- @param URL        请求地址
- @param parameters 请求参数
- @param success    请求成功的回调
- @param failure    请求失败的回调
- 
- @return 返回的对象可取消请求,调用cancel方法
  */
 + (__kindof NSURLSessionTask *)DELETE:(NSString *)URL
                            parameters:(id)parameters
@@ -237,15 +173,8 @@ typedef void(^YGNetworkStatusBlock)(YGNetworkStatusType status);
 /**
  上传文件
  
- @param URL        请求地址
- @param parameters 请求参数
  @param name       文件对应服务器上的字段
  @param filePath   文件本地的沙盒路径
- @param progress   上传进度信息
- @param success    请求成功的回调
- @param failure    请求失败的回调
- 
- @return 返回的对象可取消请求,调用cancel方法
  */
 + (__kindof NSURLSessionTask *)uploadFileWithURL:(NSString *)URL
                                       parameters:(id)parameters
@@ -257,17 +186,12 @@ typedef void(^YGNetworkStatusBlock)(YGNetworkStatusType status);
 
 /**
  上传单/多张图片
- 
- @param URL        请求地址
- @param parameters 请求参数
+
  @param name       图片对应服务器上的字段
  @param images     图片数组
  @param fileNames  图片文件名数组, 可以为nil, 数组内的文件名默认为当前日期时间"yyyyMMddHHmmss"
  @param imageScale 图片文件压缩比 范围 (0.f ~ 1.f)
  @param imageType  图片文件的类型,例:png、jpg(默认类型)....
- @param progress   上传进度信息
- @param success    请求成功的回调
- @param failure    请求失败的回调
  
  @return 返回的对象可取消请求,调用cancel方法
  */
@@ -285,13 +209,7 @@ typedef void(^YGNetworkStatusBlock)(YGNetworkStatusType status);
 /**
  下载文件
  
- @param URL      请求地址
  @param fileDir  文件存储目录(默认存储目录为Download)
- @param progress 文件下载的进度信息
- @param success  下载成功的回调(回调参数filePath:文件的路径)
- @param failure  下载失败的回调
- 
- @return 返回NSURLSessionDownloadTask实例，可用于暂停继续，暂停调用suspend方法，开始下载调用resume方法
  */
 + (__kindof NSURLSessionTask *)downloadWithURL:(NSString *)URL
                                        fileDir:(NSString *)fileDir
@@ -305,12 +223,9 @@ typedef void(^YGNetworkStatusBlock)(YGNetworkStatusType status);
 
 
 
-#pragma mark - 设置AFHTTPSessionManager相关属性
-#pragma mark 注意: 因为全局只有一个AFHTTPSessionManager实例,所以以下设置方式全局生效
+#pragma mark - 设置AFHTTPSessionManager相关属性,全局生效
 /**
- 在开发中,如果以下的设置方式不满足项目的需求,就调用此方法获取AFHTTPSessionManager实例进行自定义设置
- (注意: 调用此方法时在要导入AFNetworking.h头文件,否则可能会报找不到AFHTTPSessionManager的❌)
- @param sessionManager AFHTTPSessionManager的实例
+ 开发中可以根据需求调用此方法获取AFHTTPSessionManager实例进行自定义设置
  */
 + (void)setAFHTTPSessionManagerProperty:(void(^)(AFHTTPSessionManager *sessionManager))sessionManager;
 
