@@ -45,7 +45,7 @@ typedef void(^YGRequestCacheBlock)(id responseCache);
 typedef void(^YGRequestSuccessBlock)(id responseObject);
 
 // 失败的Block
-typedef void(^YGRequestFailedBlock)(NSError *error);
+typedef void(^YGRequestFailedBlock)(NSError *error,id cacheReponse);
 
 // 上传或者下载的进度, Progress.completedUnitCount:当前大小 - Progress.totalUnitCount:总大小
 typedef void (^YGRequestProgress)(NSProgress *progress);
@@ -63,7 +63,7 @@ typedef void(^YGNetworkStatusBlock)(YGNetworkStatusType status);
 
 /**
  是否有网络
-
+ 
  @return 网络YES, 无网:NO
  */
 + (BOOL)isNetwork;
@@ -71,7 +71,7 @@ typedef void(^YGNetworkStatusBlock)(YGNetworkStatusType status);
 
 /**
  是否是手机网络
-
+ 
  @return 网络:YES, 反之:NO
  */
 + (BOOL)isWWANNetwork;
@@ -79,7 +79,7 @@ typedef void(^YGNetworkStatusBlock)(YGNetworkStatusType status);
 
 /**
  是否是WiFi网络
-
+ 
  @return 网络:YES, 反之:NO
  */
 + (BOOL)isWiFiNetwork;
@@ -94,7 +94,7 @@ typedef void(^YGNetworkStatusBlock)(YGNetworkStatusType status);
 /**
  实时获取网络状态
  通过Block回调实时获取(此方法可多次调用)
-
+ 
  @param networkStatus 网络状态回调
  */
 + (void)networkStatusWithBlock:(YGNetworkStatusBlock)networkStatus;
@@ -102,7 +102,7 @@ typedef void(^YGNetworkStatusBlock)(YGNetworkStatusType status);
 
 /**
  取消指定URL的HTTP请求
-
+ 
  @param URL 请求的地址
  */
 + (void)cancelRequestWithURL:(NSString *)URL;
@@ -114,41 +114,34 @@ typedef void(^YGNetworkStatusBlock)(YGNetworkStatusType status);
 + (void)setDebugMode:(BOOL)isDebug;
 
 
-/**
- GET请求,无缓存
- */
-+ (__kindof NSURLSessionTask *)GET:(NSString *)URL
-                        parameters:(id)parameters
-                           success:(YGRequestSuccessBlock)success
-                           failure:(YGRequestFailedBlock)failure;
 
 /**
- GET请求,自动缓存
+ GET请求
+ @param URL 请求地址
+ @param parameters 请求参数
+ @param isCache 是否需要缓存
+ @param success 成功回调
+ @param failure 失败回调
  */
 + (__kindof NSURLSessionTask *)GET:(NSString *)URL
                         parameters:(id)parameters
-                     responseCache:(YGRequestCacheBlock)responseCache
+                           isCache:(BOOL)isCache
                            success:(YGRequestSuccessBlock)success
                            failure:(YGRequestFailedBlock)failure;
 
 /**
  POST请求,无缓存
+ @param URL 请求地址
+ @param parameters 请求参数
+ @param isCache 是否需要缓存
+ @param success 成功回调
+ @param failure 失败回调
  */
 + (__kindof NSURLSessionTask *)POST:(NSString *)URL
                          parameters:(id)parameters
+                            isCache:(BOOL)isCache
                             success:(YGRequestSuccessBlock)success
                             failure:(YGRequestFailedBlock)failure;
-
-
-/**
- POST请求,自动缓存
- */
-+ (__kindof NSURLSessionTask *)POST:(NSString *)URL
-                         parameters:(id)parameters
-                      responseCache:(YGRequestCacheBlock)responseCache
-                            success:(YGRequestSuccessBlock)success
-                            failure:(YGRequestFailedBlock)failure;
-
 
 /**
  PUT请求
@@ -186,7 +179,7 @@ typedef void(^YGNetworkStatusBlock)(YGNetworkStatusType status);
 
 /**
  上传单/多张图片
-
+ 
  @param name       图片对应服务器上的字段
  @param images     图片数组
  @param fileNames  图片文件名数组, 可以为nil, 数组内的文件名默认为当前日期时间"yyyyMMddHHmmss"
@@ -256,7 +249,7 @@ typedef void(^YGNetworkStatusBlock)(YGNetworkStatusType status);
 
 /**
  设置请求头
-
+ 
  @param value 值
  @param field 字段
  */
@@ -318,7 +311,7 @@ typedef void(^YGNetworkStatusBlock)(YGNetworkStatusType status);
 
 /**
  获取网络缓存
-
+ 
  @return 获取网络缓存的总大小 bytes(字节)
  */
 + (NSInteger)getAllHttpCacheSize;

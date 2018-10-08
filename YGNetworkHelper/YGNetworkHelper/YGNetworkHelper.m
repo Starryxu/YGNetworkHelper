@@ -8,9 +8,6 @@
 
 #import "YGNetworkHelper.h"
 
-
-
-
 #ifdef DEBUG
 #define YGLog(...) printf("[%s] %s [第%d行]: %s\n", __TIME__ ,__PRETTY_FUNCTION__ ,__LINE__, [[NSString stringWithFormat:__VA_ARGS__] UTF8String])
 #else
@@ -91,31 +88,15 @@ static AFHTTPSessionManager *_sessionManager;
     }
 }
 
-#pragma mark - GET请求无缓存
-+ (NSURLSessionTask *)GET:(NSString *)URL
-               parameters:(id)parameters
-                  success:(YGRequestSuccessBlock)success
-                  failure:(YGRequestFailedBlock)failure {
-    return [self GET:URL parameters:parameters responseCache:nil success:success failure:failure];
-}
 
-#pragma mark - POST请求无缓存
-+ (NSURLSessionTask *)POST:(NSString *)URL
-                parameters:(id)parameters
-                   success:(YGRequestSuccessBlock)success
-                   failure:(YGRequestFailedBlock)failure {
-    return [self POST:URL parameters:parameters responseCache:nil success:success failure:failure];
-}
 
 #pragma mark - GET请求自动缓存
+
 + (NSURLSessionTask *)GET:(NSString *)URL
                parameters:(id)parameters
-            responseCache:(YGRequestCacheBlock)responseCache
+                  isCache:(BOOL)isCache
                   success:(YGRequestSuccessBlock)success
                   failure:(YGRequestFailedBlock)failure {
-    //读取缓存
-    responseCache!=nil ? responseCache([YGNetworkCache httpCacheForURL:URL parameters:parameters]) : nil;
-    
     NSURLSessionTask *sessionTask = [_sessionManager GET:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -123,15 +104,20 @@ static AFHTTPSessionManager *_sessionManager;
         if (_isDebug) {YGLog(@"responseObject = %@",responseObject);}
         [[self allSessionTask] removeObject:task];
         success ? success(responseObject) : nil;
-        //对数据进行异步缓存
-        responseCache!=nil ? [YGNetworkCache setHttpCache:responseObject URL:URL parameters:parameters] : nil;
-        
+        if (isCache) {
+            //如果需要缓存,对数据进行异步缓存
+            [YGNetworkCache setHttpCache:responseObject URL:URL parameters:parameters];
+        }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
         if (_isDebug) {YGLog(@"error = %@",error);}
         [[self allSessionTask] removeObject:task];
-        failure ? failure(error) : nil;
-        
+        id response = nil;
+        if (isCache) {
+            //网络请求失败的时候查看是否有缓存,如果有,就取出来显示,如果没有,就不管了
+            response = [YGNetworkCache httpCacheForURL:URL parameters:parameters];
+        }
+        failure ? failure(error,response) : nil;
     }];
     // 添加sessionTask到数组
     sessionTask ? [[self allSessionTask] addObject:sessionTask] : nil ;
@@ -139,15 +125,12 @@ static AFHTTPSessionManager *_sessionManager;
     return sessionTask;
 }
 
-#pragma mark - POST请求自动缓存
+#pragma mark - POST请求
 + (NSURLSessionTask *)POST:(NSString *)URL
                 parameters:(id)parameters
-             responseCache:(YGRequestCacheBlock)responseCache
+                   isCache:(BOOL)isCache
                    success:(YGRequestSuccessBlock)success
                    failure:(YGRequestFailedBlock)failure {
-    //读取缓存
-    responseCache!=nil ? responseCache([YGNetworkCache httpCacheForURL:URL parameters:parameters]) : nil;
-    
     NSURLSessionTask *sessionTask = [_sessionManager POST:URL parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -156,14 +139,19 @@ static AFHTTPSessionManager *_sessionManager;
         [[self allSessionTask] removeObject:task];
         success ? success(responseObject) : nil;
         //对数据进行异步缓存
-        responseCache!=nil ? [YGNetworkCache setHttpCache:responseObject URL:URL parameters:parameters] : nil;
+        if (isCache) {
+            [YGNetworkCache setHttpCache:responseObject URL:URL parameters:parameters];
+        }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
         if (_isDebug) {YGLog(@"error = %@",error);}
         [[self allSessionTask] removeObject:task];
-        failure ? failure(error) : nil;
-        
+        id response = nil;
+        if (isCache) {
+            response = [YGNetworkCache httpCacheForURL:URL parameters:parameters];
+        }
+        failure ? failure(error,response) : nil;
     }];
     
     // 添加最新的sessionTask到数组
@@ -187,7 +175,7 @@ static AFHTTPSessionManager *_sessionManager;
         
         if (_isDebug) {YGLog(@"error = %@",error);}
         [[self allSessionTask] removeObject:task];
-        failure ? failure(error) : nil;
+        failure ? failure(error,nil) : nil;
     }];
     
     // 添加最新的sessionTask到数组
@@ -208,7 +196,7 @@ static AFHTTPSessionManager *_sessionManager;
         
         if (_isDebug) {YGLog(@"error = %@",error);}
         [[self allSessionTask] removeObject:task];
-        failure ? failure(error) : nil;
+        failure ? failure(error,nil) : nil;
     }];
     
     // 添加最新的sessionTask到数组
@@ -229,7 +217,7 @@ static AFHTTPSessionManager *_sessionManager;
     NSURLSessionTask *sessionTask = [_sessionManager POST:URL parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         NSError *error = nil;
         [formData appendPartWithFileURL:[NSURL URLWithString:filePath] name:name error:&error];
-        (failure && error) ? failure(error) : nil;
+        (failure && error) ? failure(error,nil) : nil;
     } progress:^(NSProgress * _Nonnull uploadProgress) {
         //上传进度
         dispatch_sync(dispatch_get_main_queue(), ^{
@@ -245,7 +233,7 @@ static AFHTTPSessionManager *_sessionManager;
         
         if (_isDebug) {YGLog(@"error = %@",error);}
         [[self allSessionTask] removeObject:task];
-        failure ? failure(error) : nil;
+        failure ? failure(error,nil) : nil;
     }];
     
     // 添加sessionTask到数组
@@ -298,7 +286,7 @@ static AFHTTPSessionManager *_sessionManager;
         
         if (_isDebug) {YGLog(@"error = %@",error);}
         [[self allSessionTask] removeObject:task];
-        failure ? failure(error) : nil;
+        failure ? failure(error,nil) : nil;
     }];
     
     // 添加sessionTask到数组
@@ -334,7 +322,7 @@ static AFHTTPSessionManager *_sessionManager;
     } completionHandler:^(NSURLResponse * _Nonnull response, NSURL * _Nullable filePath, NSError * _Nullable error) {
         
         [[self allSessionTask] removeObject:downloadTask];
-        if(failure && error) {failure(error) ; return ;};
+        if(failure && error) {failure(error,nil) ; return ;};
         success ? success(filePath.absoluteString /** NSURL->NSString*/) : nil;
         
     }];
